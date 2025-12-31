@@ -16,7 +16,7 @@ class WhiteOctoberBreadcrumbsExtension extends Extension
      * @param  ContainerBuilder $container
      * @return void
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $this->loadConfiguration($configs, $container);
 
