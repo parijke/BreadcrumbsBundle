@@ -1,0 +1,35 @@
+services:
+  # Set defaults for all services in this file
+  _defaults:
+    public: false
+
+  # Our service, for controllers
+  WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs:
+    class: WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs
+    calls:
+      - [setRouter, ['@router']]
+    tags:
+      - { name: kernel.reset, method: clear }
+
+  # Alias for the service
+  white_october_breadcrumbs:
+    alias: 'WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs'
+    public: true
+
+  # Templating helper
+  white_october_breadcrumbs.helper:
+    class: WhiteOctober\BreadcrumbsBundle\Templating\Helper\BreadcrumbsHelper
+    public: true
+    arguments:
+      - '@twig'
+      - '@white_october_breadcrumbs'
+      - '%white_october_breadcrumbs.options%'
+
+  # Twig extension
+  white_october_breadcrumbs.twig:
+    class: WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension
+    public: true
+    arguments:
+      - '@service_container'
+    tags:
+      - { name: twig.extension }
