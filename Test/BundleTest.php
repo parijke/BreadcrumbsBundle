@@ -2,8 +2,12 @@
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
+use WhiteOctober\BreadcrumbsBundle\Templating\Helper\BreadcrumbsHelper;
+use WhiteOctober\BreadcrumbsBundle\Test\AppKernel;
+use WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension;
 
-class BundleTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+class BundleTest extends WebTestCase
 {
     public function testInitBundle()
     {
@@ -15,7 +19,7 @@ class BundleTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         self::assertTrue($container->has('white_october_breadcrumbs.helper'));
 
         $service = $container->get('white_october_breadcrumbs.helper');
-        self::assertInstanceOf(\WhiteOctober\BreadcrumbsBundle\Templating\Helper\BreadcrumbsHelper::class, $service);
+        self::assertInstanceOf(BreadcrumbsHelper::class, $service);
     }
 
     public function testRendering()
@@ -24,11 +28,11 @@ class BundleTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
         $container = $client->getContainer();
 
-        /** @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs $service */
-        $service = $this->getContainerForTests()->get(WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs::class);
+        /** @var Breadcrumbs $service */
+        $service = $this->getContainerForTests()->get(Breadcrumbs::class);
         $service->addItem('foo');
 
-        /** @var \WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension $breadcrumbsExtension */
+        /** @var BreadcrumbsExtension $breadcrumbsExtension */
         $breadcrumbsExtension = $container->get('white_october_breadcrumbs.twig');
 
         self::assertStringEqualsStringIgnoringLineEndings(
@@ -52,11 +56,11 @@ EOD,
 
         $container = $client->getContainer();
 
-        /** @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs $service */
-        $service = $this->getContainerForTests()->get(WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs::class);
+        /** @var Breadcrumbs $service */
+        $service = $this->getContainerForTests()->get(Breadcrumbs::class);
         $service->addItem('foo', '', ['name' => 'John']);
 
-        /** @var \WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension $breadcrumbsExtension */
+        /** @var BreadcrumbsExtension $breadcrumbsExtension */
         $breadcrumbsExtension = $container->get('white_october_breadcrumbs.twig');
 
         self::assertStringEqualsStringIgnoringLineEndings(
@@ -82,12 +86,12 @@ EOD,
 
         $container = $client->getContainer();
 
-        /** @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs $service */
-        $service = $this->getContainerForTests()->get(WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs::class);
+        /** @var Breadcrumbs $service */
+        $service = $this->getContainerForTests()->get(Breadcrumbs::class);
         $service->addItem('foo');
         $service->addItem('bar', '', ['name' => 'John']);
 
-        /** @var \WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension $breadcrumbsExtension */
+        /** @var BreadcrumbsExtension $breadcrumbsExtension */
         $breadcrumbsExtension = $container->get('white_october_breadcrumbs.twig');
 
         self::assertStringEqualsStringIgnoringLineEndings(
@@ -125,6 +129,6 @@ EOD,
 
     public static function getKernelClass(): string
     {
-        return \WhiteOctober\BreadcrumbsBundle\Test\AppKernel::class;
+        return AppKernel::class;
     }
 }

@@ -5,13 +5,14 @@ namespace WhiteOctober\BreadcrumbsBundle\Test;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
+use WhiteOctober\BreadcrumbsBundle\Model\SingleBreadcrumb;
 
 final class BreadcrumbsTest extends TestCase
 {
 
     public function testBreadcrumbs(): void
     {
-        /** @var \WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs|\WhiteOctober\BreadcrumbsBundle\Model\SingleBreadcrumb[] $breadcrumbs */
+        /** @var Breadcrumbs|SingleBreadcrumb[] $breadcrumbs */
         $breadcrumbs = new Breadcrumbs();
         $breadcrumbs->addItem('FooBar');
 

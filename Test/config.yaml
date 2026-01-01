@@ -1,0 +1,10 @@
+framework:
+    secret: secret
+    test: true
+    router:
+        resource: ''
+
+services:
+    translator:
+        class: \WhiteOctober\BreadcrumbsBundle\Test\DummyTranslator
+        public: true

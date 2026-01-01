@@ -36,7 +36,7 @@ class AppKernel extends Kernel
         $this->addBundle(FrameworkBundle::class);
         $this->addBundle(TwigBundle::class);
         $this->addBundle(WhiteOctoberBreadcrumbsBundle::class);
-        $this->addConfigFile(__DIR__.'/config.xml');
+        $this->addConfigFile(__DIR__.'/config.yaml');
     }
 
     public function addBundle($bundleClassName)
@@ -57,7 +57,7 @@ class AppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(function (ContainerBuilder $container) use ($loader) {
             $this->configFiles = array_unique($this->configFiles);
