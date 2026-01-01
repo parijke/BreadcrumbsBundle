@@ -31,8 +31,7 @@ class BundleTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         /** @var \WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension $breadcrumbsExtension */
         $breadcrumbsExtension = $container->get('white_october_breadcrumbs.twig');
 
-        self::assertStringEqualsStringIgnoringLineEndings(
-<<<'EOD'
+        $expected = <<<'EOD'
     <ol id="wo-breadcrumbs" class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                                     <span itemprop="name">foo</span>
@@ -41,8 +40,10 @@ class BundleTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
                             </li>
             </ol>
 
-EOD,
-            $breadcrumbsExtension->renderBreadcrumbs()
+EOD;
+        self::assertSame(
+            $this->normalizeLineEndings($expected),
+            $this->normalizeLineEndings($breadcrumbsExtension->renderBreadcrumbs())
         );
     }
 
@@ -59,8 +60,7 @@ EOD,
         /** @var \WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension $breadcrumbsExtension */
         $breadcrumbsExtension = $container->get('white_october_breadcrumbs.twig');
 
-        self::assertStringEqualsStringIgnoringLineEndings(
-<<<'EOD'
+        $expected = <<<'EOD'
     <ol id="wo-breadcrumbs" class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                                     <span itemprop="name">foo__{name:John}</span>
@@ -69,10 +69,12 @@ EOD,
                             </li>
             </ol>
 
-EOD,
-            $breadcrumbsExtension->renderBreadcrumbs([
+EOD;
+        self::assertSame(
+            $this->normalizeLineEndings($expected),
+            $this->normalizeLineEndings($breadcrumbsExtension->renderBreadcrumbs([
                 'viewTemplate' => '@WhiteOctoberBreadcrumbs/microdata.html.twig'
-            ])
+            ]))
         );
     }
 
@@ -90,8 +92,7 @@ EOD,
         /** @var \WhiteOctober\BreadcrumbsBundle\Twig\Extension\BreadcrumbsExtension $breadcrumbsExtension */
         $breadcrumbsExtension = $container->get('white_october_breadcrumbs.twig');
 
-        self::assertStringEqualsStringIgnoringLineEndings(
-            <<<'EOD'
+        $expected = <<<'EOD'
     <ol id="wo-breadcrumbs" class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                                     <span itemprop="name">foo__domain:admin</span>
@@ -106,11 +107,13 @@ EOD,
                             </li>
             </ol>
 
-EOD,
-            $breadcrumbsExtension->renderBreadcrumbs([
+EOD;
+        self::assertSame(
+            $this->normalizeLineEndings($expected),
+            $this->normalizeLineEndings($breadcrumbsExtension->renderBreadcrumbs([
                 'viewTemplate' => '@WhiteOctoberBreadcrumbs/microdata.html.twig',
                 'translation_domain' => 'admin',
-            ])
+            ]))
         );
     }
 
@@ -126,5 +129,13 @@ EOD,
     public static function getKernelClass(): string
     {
         return \WhiteOctober\BreadcrumbsBundle\Test\AppKernel::class;
+    }
+
+    /**
+     * Normalize line endings to \n for cross-platform compatibility
+     */
+    private function normalizeLineEndings(string $string): string
+    {
+        return str_replace(["\r\n", "\r"], "\n", $string);
     }
 }
